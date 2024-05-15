@@ -26,11 +26,11 @@ class SiteChecker:
 
     def find_phone_number(self, webpage_content):
         """Ищет телефонный номер на веб-странице."""
-        phone_pattern = r"(\+?\d{1,3})?\s*\(?(\d{3,5})\)?[\s-]*(\d{3})[\s-]*(\d{2})[\s-]*(\d{2})"
+        # Изменили паттерн для учета возможного отсутствия знака "+"
+        phone_pattern = r"(?:\+(\d{1,3}))?\s*\(?(\d{3,5})\)?[\s-]*(\d{3})[\s-]*(\d{2})[\s-]*(\d{2})"
         phone_match = re.search(phone_pattern, webpage_content)
         if phone_match:
-            # Форматируем номер телефона в желаемый формат
-            country_code = phone_match.group(1) if phone_match.group(1) else "+7"
+            country_code = phone_match.group(1) if phone_match.group(1) else ""
             formatted_phone_number = f"{country_code}({phone_match.group(2)}){phone_match.group(3)}-{phone_match.group(4)}-{phone_match.group(5)}"
             return formatted_phone_number
         else:
